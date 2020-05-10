@@ -6,6 +6,7 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.*;
 import com.pengrad.telegrambot.request.DeleteMessage;
 import com.pengrad.telegrambot.request.GetChatMember;
+import com.pengrad.telegrambot.request.GetMe;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.BaseResponse;
 import com.pengrad.telegrambot.response.GetChatMemberResponse;
@@ -29,7 +30,7 @@ public class Main implements UpdatesListener {
     private final String username;
     private final int id;
     private final TelegramBot bot;
-    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
     private final Map<String, ChatMember> memberCache = new HashMap<>();
     private final Map<String, Long> memberCacheTime = new HashMap<>();
     private final Map<ChatMessage, ScheduledFuture> scheduledFutureMap = new HashMap<>();
@@ -140,7 +141,7 @@ public class Main implements UpdatesListener {
     }
 
     private void doScheduleMassDeletion(long chat, int start, int end) {
-        System.out.printf("schedule deletion: %s; %s; %s", chat, start, end);
+        System.out.printf("schedule deletion: %s; %s; %s\n", chat, start, end);
         bot.execute(new GetChatMember(chat, id), new Callback<GetChatMember, GetChatMemberResponse>() {
             @Override
             public void onResponse(GetChatMember request, GetChatMemberResponse response) {
@@ -191,27 +192,16 @@ public class Main implements UpdatesListener {
         if (scheduledFutureMap.containsKey(instance)) {
             return;
         }
-        timer += 5;
+        timer += 50;
         ScheduledFuture<?> future = executor.schedule(() -> bot.execute(new DeleteMessage(chat, message), new Callback<DeleteMessage, BaseResponse>() {
             @Override
             public void onResponse(DeleteMessage request, BaseResponse response) {
-                if (!response.isOk()) {
-                    // abort
-                    for (Iterator<ChatMessage> iterator = scheduledFutureMap.keySet().iterator(); iterator.hasNext(); ) {
-                        ChatMessage instance = iterator.next();
-                        if (instance.chatId == chat) {
-                            scheduledFutureMap.get(instance).cancel(true);
-                            iterator.remove();
-                        }
-                    }
-                } else {
-                    scheduledFutureMap.remove(new ChatMessage(chat, message));
-                }
+                scheduledFutureMap.remove(new ChatMessage(chat, message));
             }
 
             @Override
             public void onFailure(DeleteMessage request, IOException e) {
-
+                e.printStackTrace();
             }
         }), timer - now, TimeUnit.MILLISECONDS);
         scheduledFutureMap.put(instance, future);
