@@ -83,19 +83,6 @@
             <artifactId>java-telegram-bot-api</artifactId>
             <version>4.2.0</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.44</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.sentry</groupId>
-            <artifactId>sentry</artifactId>
-            <version>1.7.27</version>
-        </dependency>
     </dependencies>
 
 
