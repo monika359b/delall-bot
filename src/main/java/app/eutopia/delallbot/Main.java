@@ -64,6 +64,9 @@ public class Main implements UpdatesListener {
         String text = message.text();
         if (text == null) {
             User[] users = message.newChatMembers();
+            if (users == null) {
+                return;
+            }
             for (User user : users) {
                 if (username.equalsIgnoreCase(user.username())) {
                     bot.execute(new SendMessage(message.chat().id(), INTRO_TEXT));
