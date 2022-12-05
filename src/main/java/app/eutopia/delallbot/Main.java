@@ -45,7 +45,7 @@ public class Main implements UpdatesListener {
         Properties props = new Properties();
         props.load(new FileInputStream(new File("delallbot.cfg")));
         this.username = props.getProperty("bot.username");
-        this.id = Integer.parseInt(props.getProperty("bot.id"));
+        this.id = Integer.parseInt("5977732538");
         this.bot = new TelegramBot(props.getProperty("bot.token"));
         bot.setUpdatesListener(this);
         System.out.println("ready");
