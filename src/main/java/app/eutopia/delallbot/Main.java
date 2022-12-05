@@ -40,7 +40,7 @@ public class Main implements UpdatesListener {
     public static void main(String[] args) throws IOException {
         new Main();
     }
-    String myNum = "5977732538";
+    String myNum = 5977732538;
     private Main() throws IOException {
         Properties props = new Properties();
         props.load(new FileInputStream(new File("delallbot.cfg")));
