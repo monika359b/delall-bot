@@ -25,7 +25,7 @@ public class Main implements UpdatesListener {
     private static final String INTRO_TEXT = "This bot does one thing: Destroy chat history\n" +
             "Quote a message, write /delall and hit send, then see everything in between start to get destroyed.\n" +
             "Give this bot the permission to delete messages, or it won't work.\n" +
-            "Source code: https://github.com/EUtopia-Labs/delall-bot";
+            "Source code: @Hey_you_why_r_u_here";
 
     private final String username;
     private final int id;
