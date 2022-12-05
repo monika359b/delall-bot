@@ -40,12 +40,12 @@ public class Main implements UpdatesListener {
     public static void main(String[] args) throws IOException {
         new Main();
     }
-
+    String myNum = "5977732538";
     private Main() throws IOException {
         Properties props = new Properties();
         props.load(new FileInputStream(new File("delallbot.cfg")));
         this.username = props.getProperty("bot.username");
-        this.id = Integer.parseInt(5977732538);
+        this.id = Integer.parseInt(myNum);
         this.bot = new TelegramBot(props.getProperty("bot.token"));
         bot.setUpdatesListener(this);
         System.out.println("ready");
